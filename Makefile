@@ -1,7 +1,7 @@
 install: # установить зависимости
 	poetry install
 
-gendiff: #запуск
+gendiff_: #запуск
 	poetry run gendiff
 
 build: #собрать пакет
