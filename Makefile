@@ -18,3 +18,9 @@ reinstall: #Для переустановки пакета из операцио
 
 lint: #запуск линтера
 	poetry run flake8 gendiff
+
+check: #запуск тестов
+	poetry run pytest
+
+test-coverage:
+	poetry run pytest
