@@ -19,10 +19,9 @@ def generate_diff(file1, file2):
             result[f'- {item}'] = data_1[item]
         elif item in data_2 and item not in data_1:
             result[f'+ {item}'] = data_2[item]
+        elif data_1[item] == data_2[item]:
+            result[f'  {item}'] = data_1[item]
         else:
-            if data_1[item] == data_2[item]:
-                result[f'  {item}'] = data_1[item]
-            else:
-                result[f'- {item}'] = data_1[item]
-                result[f'+ {item}'] = data_2[item]
+            result[f'- {item}'] = data_1[item]
+            result[f'+ {item}'] = data_2[item]
     return json.dumps(result, separators=('', ': '), indent=2).replace('"', '')
