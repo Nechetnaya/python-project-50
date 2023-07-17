@@ -32,10 +32,15 @@ one_empty_yml = ((f"{yaml_dir}file1.yaml", f"{yaml_dir}empty_file.yaml"),
 both_empty_yml = ((f"{yaml_dir}empty_file.yaml", f"{yaml_dir}empty_file.yaml"),
                   f"{txt_dir}result_both_empty.txt")
 
+# test json & yaml files
+normal_json_yml = ((f"{yaml_dir}file1.yaml", f"{json_dir}file2.json"),
+                   f"{txt_dir}expected_result.txt")
+
 
 @pytest.mark.parametrize("test_input,result",
                          [normal, same, one_empty, both_empty,
-                          normal_yml, same_yml, one_empty_yml, both_empty_yml])
+                          normal_yml, same_yml, one_empty_yml, both_empty_yml,
+                          normal_json_yml])
 def test_generate_diff(test_input, result):
     file_1, file_2 = test_input
     assert generate_diff(file_1, file_2) == open(result).read()
