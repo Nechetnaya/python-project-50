@@ -23,9 +23,10 @@ test: #запуск тестов
 	poetry run pytest
 
 test-coverage:
-	poetry run pytest
+	poetry run pytest --cov=gendiff --cov-report xml
 
 selfcheck:
 	poetry check
 
-check: selfcheck test lint
+check:
+	selfcheck test lint
