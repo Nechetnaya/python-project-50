@@ -1,10 +1,13 @@
 import json
+import yaml
 
 
 def decode_file(file):
     with open(file) as data:
         if not data.read().strip():
             return {}
+        elif file[-4:] == 'yaml' or '.yml':
+            return yaml.load(open(file), Loader=yaml.FullLoader)
         else:
             return json.load(open(file))
 
