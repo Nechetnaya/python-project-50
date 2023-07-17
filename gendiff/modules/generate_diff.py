@@ -9,6 +9,10 @@ def decode_file(file):
             return json.load(open(file))
 
 
+def code_data(data):
+    return json.dumps(data, separators=('', ': '), indent=2).replace('"', '')
+
+
 def generate_diff(file1, file2):
     data_1 = decode_file(file1)
     data_2 = decode_file(file2)
@@ -24,4 +28,4 @@ def generate_diff(file1, file2):
         else:
             result[f'- {item}'] = data_1[item]
             result[f'+ {item}'] = data_2[item]
-    return json.dumps(result, separators=('', ': '), indent=2).replace('"', '')
+    return code_data(result)
