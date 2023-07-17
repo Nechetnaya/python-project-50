@@ -1,17 +1,17 @@
 import json
 
 
+def decode_file(file):
+    with open(file) as data:
+        if not data.read().strip():
+            return {}
+        else:
+            return json.load(open(file))
+
+
 def generate_diff(file1, file2):
-    file_1 = open(file1)
-    file_2 = open(file2)
-    if not file_1.read().strip():
-        data_1 = {}
-    else:
-        data_1 = json.load(open(file1))
-    if not file_2.read().strip():
-        data_2 = {}
-    else:
-        data_2 = json.load(open(file2))
+    data_1 = decode_file(file1)
+    data_2 = decode_file(file2)
     result = {}
     keys = set(data_1.keys()) | set(data_2.keys())
     for item in sorted(keys):
