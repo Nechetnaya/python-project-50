@@ -23,7 +23,7 @@ test: #запуск тестов
 	poetry run pytest
 
 test-coverage:
-	poetry run pytest --cov=gendiff --cov-report xml
+	poetry run pytest --cov=gendiff.modules --cov-report xml
 
 check:
 	make lint && make test
