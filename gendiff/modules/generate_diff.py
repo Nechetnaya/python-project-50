@@ -1,5 +1,13 @@
 import json
 import yaml
+from gendiff.modules.formaters.stylish import stylish
+
+
+def generate_diff(file1, file2, format_=None):
+    data_1 = decode_file(file1)
+    data_2 = decode_file(file2)
+    if format_ is None:
+        return stylish(build_diff(data_1, data_2))
 
 
 def decode_file(file):
@@ -12,23 +20,20 @@ def decode_file(file):
             return json.load(open(file))
 
 
-def code_data(data):
-    return json.dumps(data, separators=('', ': '), indent=2).replace('"', '')
-
-
-def generate_diff(file1, file2):
-    data_1 = decode_file(file1)
-    data_2 = decode_file(file2)
+def build_diff(data_1, data_2):
     result = {}
     keys = set(data_1.keys()) | set(data_2.keys())
     for item in sorted(keys):
         if item in data_1 and item not in data_2:
-            result[f'- {item}'] = data_1[item]
+            result[item] = {"act": "-", "value1": data_1[item], "value2": None}
         elif item in data_2 and item not in data_1:
-            result[f'+ {item}'] = data_2[item]
-        elif data_1[item] == data_2[item]:
-            result[f'  {item}'] = data_1[item]
+            result[item] = {"act": "+", "value2": data_2[item], "value1": None}
         else:
-            result[f'- {item}'] = data_1[item]
-            result[f'+ {item}'] = data_2[item]
-    return code_data(result)
+            if type(data_1[item]) is dict and type(data_2[item]) is dict:
+                result[item] = {"act": "", "value1": build_diff(data_1[item], data_2[item])}
+            else:
+                if data_1[item] == data_2[item]:
+                    result[item] = {"act": "", "value1": data_1[item], "value2": data_2[item]}
+                else:
+                    result[item] = {"act": "+-", "value1": data_1[item], "value2": data_2[item]}
+    return result
