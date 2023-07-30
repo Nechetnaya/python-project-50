@@ -7,10 +7,12 @@ from gendiff.modules.formaters.plain import plain
 def generate_diff(file1, file2, format_="stylish"):
     data_1 = decode_file(file1)
     data_2 = decode_file(file2)
-    if format_ == "stylish":
+    if format_ == 'stylish':
         return stylish(build_diff(data_1, data_2))
     if format_ == 'plain':
         return plain(build_diff(data_1, data_2), '')[:-1]
+    if format_ == 'json':
+        return json.dumps(build_diff(data_1, data_2))
 
 
 def decode_file(file):
