@@ -1,9 +1,6 @@
 def plain(data, path_):
     result = ''
-    not_result = ''
-    if type(data) is not dict:
-        not_result += ''
-    elif "value1" not in data:
+    if "value1" not in data:
         for key in data:
             result += plain(data[key], path_=f'{path_}.{key}')
     elif data['act'] == "+":
@@ -15,11 +12,8 @@ def plain(data, path_):
         result += f'Property {decorate_path(path_)} was updated. '\
                   f'From {decorate_value(data["value1"])} '\
                   f'to {decorate_value(data["value2"])}\n'
-    elif data['act'] == "":
-        if is_dict_with_value(data['value1']):
-            result += plain(data['value1'], path_)
-        else:
-            not_result += ''
+    elif data['act'] == "" and is_dict_with_value(data['value1']):
+        result += plain(data['value1'], path_)
     return result
 
 
