@@ -33,23 +33,21 @@ def build_diff(data_1, data_2):
             result[item] = {"act": "-", "value1": data_1[item], "value2": None}
         elif item in data_2 and item not in data_1:
             result[item] = {"act": "+", "value2": data_2[item], "value1": None}
+        elif type(data_1[item]) is dict and type(data_2[item]) is dict:
+            result[item] = {
+                "act": "",
+                "value1": build_diff(data_1[item], data_2[item]),
+            }
+        elif data_1[item] == data_2[item]:
+            result[item] = {
+                "act": "",
+                "value1": data_1[item],
+                "value2": data_2[item],
+            }
         else:
-            if type(data_1[item]) is dict and type(data_2[item]) is dict:
-                result[item] = {
-                    "act": "",
-                    "value1": build_diff(data_1[item], data_2[item]),
-                }
-            else:
-                if data_1[item] == data_2[item]:
-                    result[item] = {
-                        "act": "",
-                        "value1": data_1[item],
-                        "value2": data_2[item],
-                    }
-                else:
-                    result[item] = {
-                        "act": "+-",
-                        "value1": data_1[item],
-                        "value2": data_2[item],
-                    }
+            result[item] = {
+                "act": "+-",
+                "value1": data_1[item],
+                "value2": data_2[item],
+            }
     return result
