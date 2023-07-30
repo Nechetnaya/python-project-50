@@ -1,6 +1,3 @@
-import json
-
-
 def stylish_(data):
     return data
 
@@ -22,7 +19,8 @@ def stylish(data, key=None, gap=''):
                 result += f'\n{gap}{act1}{key}: {stylish(val1, gap=gap+"  ")}'
                 result += f'\n{gap}{act2}{key}: {stylish(val2, gap=gap+"  ")}'
             else:
-                result += f'\n{gap}{give_act(data)}{key}: {stylish(give_value(data), gap=gap+"  ")}'
+                result += f'\n{gap}{give_act(data)}{key}: ' \
+                          f'{stylish(give_value(data), gap=gap+"  ")}'
         else:
             if is_simple_dict(data):
                 result += decorate_dict(data, gap)
@@ -32,7 +30,8 @@ def stylish(data, key=None, gap=''):
                     if type(data[key]) is dict and "value1" in data[key]:
                         result += stylish(data[key], key, gap=gap+'  ')
                     else:
-                        result += f'\n{gap + "    "}{key}: {stylish(data[key], key, gap=gap+"    ")}'
+                        result += f'\n{gap + "    "}{key}: ' \
+                                  f'{stylish(data[key], key, gap=gap+"    ")}'
                 result += f'\n{gap}' + '}'
     return str(result)
 
