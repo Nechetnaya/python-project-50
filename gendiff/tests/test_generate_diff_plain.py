@@ -1,4 +1,4 @@
-from gendiff.modules.generate_difference import generate_diff
+from gendiff.gendiff import generate_diff
 import pytest
 
 # multilevel plain
