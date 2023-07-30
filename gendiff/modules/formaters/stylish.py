@@ -7,32 +7,17 @@ def stylish(data, key=None, gap=''):
         return "{}"
     result = ''
     if type(data) is not dict:
-        if data is None:
-            result += 'null'
-        else:
-            result += str(data).lower() if type(data) == bool else str(data)
+        result += decorate_simple_data(data)
     else:
         if has_value(data):
-            if data["act"] == '+-':
-                act1, act2 = give_act(data)
-                val1, val2 = give_value(data)
-                result += f'\n{gap}{act1}{key}: {stylish(val1, gap=gap+"  ")}'
-                result += f'\n{gap}{act2}{key}: {stylish(val2, gap=gap+"  ")}'
-            else:
-                result += f'\n{gap}{give_act(data)}{key}: ' \
-                          f'{stylish(give_value(data), gap=gap+"  ")}'
+            result += decorate_value_dict(data, key, gap)
+        elif is_simple_dict(data):
+            result += decorate_dict(data, gap)
         else:
-            if is_simple_dict(data):
-                result += decorate_dict(data, gap)
-            else:
-                result += '{'
-                for key in data:
-                    if type(data[key]) is dict and "value1" in data[key]:
-                        result += stylish(data[key], key, gap=gap+'  ')
-                    else:
-                        result += f'\n{gap + "    "}{key}: ' \
-                                  f'{stylish(data[key], key, gap=gap+"    ")}'
-                result += f'\n{gap}' + '}'
+            result += '{'
+            for key in data:
+                result += decorate_multy_dict(data[key], key, gap)
+            result += f'\n{gap}' + '}'
     return str(result)
 
 
@@ -45,6 +30,44 @@ def is_simple_dict(data):
 
 def has_value(data):
     return True if "value1" in data else False
+
+
+def decorate_dict(data, gap):
+    result = '{\n'
+    for key in data:
+        result += f'{gap + "    "}{key}: {data[key]}\n'
+    result += f'{gap}' + '}'
+    return result
+
+
+def decorate_simple_data(data):
+    if data is None:
+        return 'null'
+    elif type(data) == bool:
+        return str(data).lower()
+    else:
+        return str(data)
+
+
+def decorate_multy_dict(data, key, gap):
+    if type(data) is dict and "value1" in data:
+        return stylish(data, key, gap=gap + '  ')
+    else:
+        return f'\n{gap + "    "}{key}: ' \
+                  f'{stylish(data, key, gap=gap + "    ")}'
+
+
+def decorate_value_dict(data, key, gap):
+    result = ''
+    if data["act"] == '+-':
+        act1, act2 = give_act(data)
+        val1, val2 = give_value(data)
+        result += f'\n{gap}{act1}{key}: {stylish(val1, gap=gap + "  ")}'
+        result += f'\n{gap}{act2}{key}: {stylish(val2, gap=gap + "  ")}'
+    else:
+        result += f'\n{gap}{give_act(data)}{key}: ' \
+                  f'{stylish(give_value(data), gap=gap + "  ")}'
+    return result
 
 
 def give_act(data):
@@ -69,11 +92,3 @@ def give_value(data):
     elif data["act"] == '+-':
         acts = (data["value1"], data["value2"])
         return acts
-
-
-def decorate_dict(data, gap):
-    result = '{\n'
-    for key in data:
-        result += f'{gap + "    "}{key}: {data[key]}\n'
-    result += f'{gap}' + '}'
-    return result
