@@ -8,16 +8,15 @@ def stylish(data, key=None, gap=''):
     result = ''
     if type(data) is not dict:
         result += decorate_simple_data(data)
+    elif has_value(data):
+        result += decorate_value_dict(data, key, gap)
+    elif is_simple_dict(data):
+        result += decorate_dict(data, gap)
     else:
-        if has_value(data):
-            result += decorate_value_dict(data, key, gap)
-        elif is_simple_dict(data):
-            result += decorate_dict(data, gap)
-        else:
-            result += '{'
-            for key in data:
-                result += decorate_multy_dict(data[key], key, gap)
-            result += f'\n{gap}' + '}'
+        result += '{'
+        for key in data:
+            result += decorate_multy_dict(data[key], key, gap)
+        result += f'\n{gap}' + '}'
     return str(result)
 
 
