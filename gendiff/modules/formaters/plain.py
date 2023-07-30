@@ -28,6 +28,8 @@ def decorate_simple_data(data):
         return 'null'
     elif type(data) == bool:
         return str(data).lower()
+    elif type(data) == int:
+        return data
     else:
         return f"'{str(data)}'"
 
