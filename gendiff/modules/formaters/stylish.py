@@ -52,8 +52,8 @@ def decorate_multy_dict(data, key, gap):
     if type(data) is dict and "value1" in data:
         return stylish(data, key, gap=gap + '  ')
     else:
-        return f'\n{gap + "    "}{key}: ' \
-                  f'{stylish(data, key, gap=gap + "    ")}'
+        return f'\n{gap + "    "}{key}: '\
+               f'{stylish(data, key, gap=gap + "    ")}'
 
 
 def decorate_value_dict(data, key, gap):
