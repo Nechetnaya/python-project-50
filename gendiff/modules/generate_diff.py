@@ -1,13 +1,16 @@
 import json
 import yaml
 from gendiff.modules.formaters.stylish import stylish
+from gendiff.modules.formaters.plain import plain
 
 
-def generate_diff(file1, file2, format_=None):
+def generate_diff(file1, file2, format_="stylish"):
     data_1 = decode_file(file1)
     data_2 = decode_file(file2)
-    if format_ is None:
+    if format_ == "stylish":
         return stylish(build_diff(data_1, data_2))
+    if format_ == 'plain':
+        return plain(build_diff(data_1, data_2), '')[:-1]
 
 
 def decode_file(file):
